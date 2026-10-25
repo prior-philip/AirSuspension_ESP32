@@ -9,7 +9,7 @@ on:
 
 env:
   FQBN: esp32:esp32:esp32s3:CDCOnBoot=cdc,USBMode=hwcdc,UploadMode=default,FlashSize=4M,PartitionScheme=min_spiffs
-  ESP32_CORE: 3.3.0
+  ESP32_CORE: 3.3.12
 
 jobs:
   build:
