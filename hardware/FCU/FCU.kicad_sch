@@ -5,8 +5,9 @@
 	(uuid "aa46cec3-1dab-4958-8999-56e8baa5b369")
 	(paper "A4")
 	(title_block
-		(title "AirSuspension Controller")
+		(title "AirSuspension Fron Control Unit")
 		(rev "0.01")
+		(comment 1 "MCU, Power and Valve drivers")
 	)
 	(lib_symbols
 		(symbol "Connector:Conn_01x02_Pin"
@@ -7661,7 +7662,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Diode_THT:D_A-405_P2.54mm_Vertical_AnodeUp"
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical"
 			(at 237.998 69.85 90)
 			(hide yes)
 			(show_name no)
@@ -7694,7 +7695,7 @@
 				)
 			)
 		)
-		(property "KiLib_Generator" "diode/THT"
+		(property "KiLib_Generator" "resistor/THT"
 			(at 236.22 69.85 0)
 			(hide yes)
 			(show_name no)

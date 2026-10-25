@@ -31,17 +31,34 @@ Low-power valves: all four valves may be energised together (no interlock).
 
 ## Repository layout
 
-| Folder              | Content                                                        |
-|---------------------|----------------------------------------------------------------|
-| `AirSuspension/`    | Arduino sketch (firmware)                                      |
-| `hardware/FCU/`     | KiCad project: Front Control Unit — MCU, valve FETs, power     |
-| `hardware/RCU/`     | KiCad project: Rear Control Unit — connector distribution, sensor power, level shifter |
+| Folder              | Content                                                  |
+|---------------------|----------------------------------------------------------|
+| `AirSuspension/`    | Arduino sketch (firmware)                                |
+| `hardware/FCU/`     | KiCad project: Front Control Unit, see [its README](hardware/FCU/README.md) |
+| `hardware/RCU/`     | KiCad project: Rear Connector Unit, see [its README](hardware/RCU/README.md) |
 
-The schematics are the source of truth for pin assignments; the GPIO table
-below must match `hardware/FCU`. Firmware releases are tagged `v*`; board
-revisions use `fcu-*` / `rcu-*` tags (for example `fcu-rev2`) and do not
-trigger a firmware build. KiCad backups, lock files and caches are
-git-ignored.
+Firmware releases are tagged `v*`; board revisions use `fcu-*` / `rcu-*`
+tags (for example `fcu-rev2`) and do not trigger a firmware build. KiCad
+backups, lock files and caches are git-ignored.
+
+## Hardware designs
+
+Two boards, both designed in KiCad 10, 2 copper layers, through-hole parts.
+
+| Board | Role | Size | Revision |
+|-------|------|------|----------|
+| **FCU** (Front Control Unit) | ESP32-S3 SuperMini, four valve MOSFETs, 12 V to 3.3 V step-down, OLED / button / sensor connectors | 80.0 × 62.2 mm | 0.01 |
+| **RCU** (Rear Connector Unit) | Connector distribution to the rear axle: valves, ride-height sensors, 12 V to 5 V sensor supply, 5 V to 3.3 V signal dividers | 55.9 × 45.7 mm | not set in the title block |
+
+```
+ 12 V ──► FCU ──► valves (low-side MOSFETs) ─┐
+          ESP32-S3                            ├── 12-pin cable ──► RCU ──► 4 valves
+          OLED, 2 buttons       sensor signals ◄┘                         2 ride-height sensors
+```
+
+The schematics are the source of truth for pin assignments. The GPIO table
+in the Hardware section above is what the firmware uses; `hardware/FCU/README.md`
+lists what the board wires up, and the two should match.
 
 ## Setup
 
