@@ -14,19 +14,20 @@ two buttons and the ride-height sensors.
 
 ## Functions
 
-- **MCU:** Waveshare/WeAct style ESP32-S3 SuperMini module (U3).
+- **MCU:** ESP32-S3 SuperMini module (U3).
 - **Valve drivers:** four IRLZ44N logic-level MOSFETs (Q1–Q4), low-side
   switching. Each gate has a 100 Ω series resistor and a 10 k pulldown to
   GND, so valves stay off while the MCU boots or sleeps. Each valve coil has
   a 1N4003 flyback diode to +12 V (D1–D4).
 - **Power:** 12 V input (P1/P2), 470 µF and 470 nF bulk/decoupling on 12 V.
   A plug-in step-down module (P2–P5, marked "3.3V out") makes the 3.3 V rail.
-  D5 (1N4003) connects the SuperMini's 5 V pin to the 12 V rail. The
+  D5 (1N4003) connects the SuperMini's 5 V pin to the 12 V rail, so USB power also feeds that rail. The
   schematic note says some step-down modules need an input voltage when the
   board is USB-powered, otherwise their output shorts 3.3 V to GND.
-- **Sensor inputs:** two analog inputs with 47 pF filter capacitors.
-  The 3.3 V sensor connector (J3) is meant for sensors that run at 3.3 V;
-  see the note below when the RCU is used.
+- **Sensor inputs:** two analog inputs with 47 pF filter capacitors. In the
+  vehicle the sensors are powered from the RCU, which also divides their
+  signals down to 3.3 V (see [`../RCU`](../RCU)). Connector J3 breaks out
+  the two signals together with 3.3 V and GND.
 - **Buttons:** UP and DOWN with 10 k pullups to 3.3 V. The schematic notes
   that the signals are lifted during deep sleep to prevent unintended wake-ups.
 
@@ -63,12 +64,6 @@ Unused: GPIO 3, 10, 11, TX, RX.
   to GPIO 13. The firmware (`Config.h`) defines `BUTTON_DOWN = 12` and
   `BUTTON_UP = 13`. Either the buttons are wired crosswise on the harness, or
   UP and DOWN are swapped in one of the two places.
-- **Sensor supply.** FCU J3 supplies +3.3 V to the sensors, while the RCU
-  supplies them with 5 V and divides the signals down to 3.3 V. Do not
-  connect FCU J3 pin 1 to the RCU's sensor supply.
-- **R10 footprint.** In the schematic, R10 (button pullup, 10 k) has the
-  footprint `Diode_THT:D_A-405_P2.54mm_Vertical_AnodeUp`, a diode footprint.
-  The other resistors use axial resistor footprints.
 - **`FCU.csv` is out of date.** It lists an Arduino Nano, LM7805 and IRLU120,
   which are not in the current schematic. Regenerate the BOM from KiCad.
 - **Fabrication files are older than the board.** The Gerber and drill files
@@ -84,4 +79,5 @@ Unused: GPIO 3, 10, 11, TX, RX.
 | `FCU.kicad_pro/.kicad_sch/.kicad_pcb` | KiCad project |
 | `Documents/VW-1234-10001/` | Gerber, drill, placement files and a zip of the fabrication data |
 | `Documents/VW-1234-20001/` | Schematic and assembly PDFs, netlist, layer PDFs |
-| `Documents/schemtic.pdf` | Schematic PDF |
+| `Documents/FCU.pdf` | Current schematic PDF |
+| `Documents/schemtic.pdf` | Older schematic PDF |
