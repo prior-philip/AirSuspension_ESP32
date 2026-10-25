@@ -1,5 +1,7 @@
 # AirSuspension Controller — ESP32-S3 SuperMini
 
+[![Build](https://github.com/prior-philip/AirSuspension_ESP32/actions/workflows/build.yml/badge.svg?branch=S3)](https://github.com/prior-philip/AirSuspension_ESP32/actions/workflows/build.yml)
+
 Two-channel air suspension levelling controller for a campervan rear axle.
 Reads two analog ride-height sensors, drives four valves (inflate/deflate per
 side) from a tank with pressure-switched compressor, and shows state on a
@@ -26,6 +28,30 @@ side) from a tank with pressure-switched compressor, and shows state on a
 | Status LED    | 48   | Shared red LED / WS2812 on the SuperMini     |
 
 Low-power valves: all four valves may be energised together (no interlock).
+
+## Setup
+
+1. Clone the repo and open `AirSuspension/AirSuspension.ino` in the Arduino IDE 2.x.
+2. Install the ESP32 board package (core 3.3.x) and the **U8g2** library.
+3. **Create your secrets file:** copy `AirSuspension/secrets.h.example` to
+   `AirSuspension/secrets.h` and set your own `WIFI_AP_PASS` (at least 8
+   characters). `secrets.h` is git-ignored and never committed. Without it
+   the build stops with an error.
+4. Select the board settings below, then compile and upload.
+
+The example file contains a shared default password. Always set your own
+before flashing a board that goes into a vehicle.
+
+### Automatic builds (GitHub Actions)
+
+Every push to `S3` or `main`, and every pull request, is compiled by the
+**Build** workflow (badge above). The `.bin` files are attached to each run
+as artifacts. Pushing a tag such as `v1.0.0` also attaches them to a GitHub
+Release.
+
+CI builds use `secrets.h.example`, so the downloaded `.bin` files carry the
+default password. For your own device, compile locally with your own
+`secrets.h`.
 
 ## Build settings (Arduino IDE 2.x, core 3.3.x)
 
