@@ -146,7 +146,7 @@ const char* DESCR   = "ESP32-S3 SuperMini | CAL | ManualMode | WiFi | OTA | flat
 
 // Display health watchdog cadence (ms)
 static const unsigned long DISPLAY_PROBE_INTERVAL  = 5000;
-static const unsigned long DISPLAY_FORCED_REINIT   = 60000;
+static const unsigned long DISPLAY_RETRY_INTERVAL  = 60000;   // retry while the display is missing
 
 // ============================================================================
 // HELPER: apply ADC config (called from setup AND after WiFi init)
@@ -206,7 +206,7 @@ void setup() {
   // in Arduino IDE board settings.
   Serial.begin(115200);
   unsigned long t0 = millis();
-  while (!Serial && millis() - t0 < 3000) { delay(10); }   // wait up to 3s for host
+  while (!Serial && millis() - t0 < 500) { delay(10); }    // wait up to 0.5 s for host (no host in the car)
   delay(100);
   Serial.println("\n\n=== BOOT ===");  Serial.println();
   Serial.println("Running at: 160MHZ");
@@ -327,13 +327,13 @@ void setup() {
 // ============================================================================
 void displayHealthWatchdog(unsigned long currentMillis) {
   static unsigned long lastProbe        = 0;
-  static unsigned long lastForcedReinit = 0;
+  static unsigned long lastRetry        = 0;
 
   if (!displayAvailable) {
-    if (currentMillis - lastForcedReinit > DISPLAY_FORCED_REINIT) {
+    if (currentMillis - lastRetry > DISPLAY_RETRY_INTERVAL) {
       Serial.println(F("Display: retry init"));
       displayAvailable  = initDisplay();
-      lastForcedReinit  = currentMillis;
+      lastRetry         = currentMillis;
       lastProbe         = currentMillis;
     }
     return;
@@ -347,14 +347,9 @@ void displayHealthWatchdog(unsigned long currentMillis) {
       Serial.print(err);
       Serial.println(F(" — re-init"));
       displayAvailable  = initDisplay();
-      lastForcedReinit  = currentMillis;
+      lastRetry         = currentMillis;
     }
     lastProbe = currentMillis;
-  }
-
-  if (currentMillis - lastForcedReinit >= DISPLAY_FORCED_REINIT) {
-    displayAvailable  = initDisplay();
-    lastForcedReinit  = currentMillis;
   }
 }
 

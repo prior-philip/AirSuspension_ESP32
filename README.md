@@ -271,8 +271,6 @@ one-line `DESCR` in the `.ino`.
 - Debug prints right raw ADC before inversion; "Tol 15%" hardcoded.
 - Calibration accepts a floating pin (`CAL_MIN_SAFETY_LOW = 0`); span check
   200 (load) vs 1000 (validate).
-- Display watchdog re-inits every 60 s even when healthy (now cheap, but
-  unnecessary).
 - LED writes in `Valves.h`/`SerialControl.h` are overridden by the loop.
 - `REGULATION_TIMEOUT` also used as the driving latch.
 - Anti-hunt threshold (5 %/10 s) not yet re-sized for restricted tubes.
