@@ -29,6 +29,9 @@ jobs:
           arduino-cli core install esp32:esp32@${ESP32_CORE}
           arduino-cli lib install "U8g2"
 
+      - name: Create placeholder secrets.h
+        run: cp AirSuspension/secrets.h.example AirSuspension/secrets.h
+
       - name: Compile AirSuspension
         run: |
           arduino-cli compile --fqbn "$FQBN" \

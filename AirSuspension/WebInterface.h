@@ -1,7 +1,7 @@
 // WebInterface.h - WiFi Access Point + Web Dashboard / Control Interface
 //
 // Creates its own WiFi AP — no router needed.
-// Connect phone or laptop to:  SSID "AirSuspension"  PW "leveling1"
+// Connect phone or laptop to:  SSID "AirSuspension"  PW = WIFI_AP_PASS (see secrets.h)
 // Then open:  http://192.168.4.1
 //
 // Three-tab single-page app:
