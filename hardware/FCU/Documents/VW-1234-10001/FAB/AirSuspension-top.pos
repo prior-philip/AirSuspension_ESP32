@@ -1,0 +1,33 @@
+### Footprint positions - created on 2025-11-02T10:15:51+0100 ###
+### Printed by KiCad version 9.0.4
+## Unit = mm, Angle = deg.
+## Side : top
+# Ref     Val                Package                                                 PosX       PosY       Rot  Side
+C1        470uF              CP_Radial_D14.0mm_P5.00mm                            85.0900   -54.6100  -90.0000  top
+C2        47uF               CP_Radial_D12.5mm_P5.00mm                           107.9500   -59.6100   90.0000  top
+C3        47pF               C_Rect_L7.0mm_W3.5mm_P5.00mm                        143.5100   -87.7100  -90.0000  top
+C4        47pF               C_Rect_L7.0mm_W3.5mm_P5.00mm                        138.4300   -87.7100  -90.0000  top
+C5        10uF               CP_Radial_D5.0mm_P2.50mm                            142.2400   -63.4600   90.0000  top
+C6        470pF              C_Rect_L7.0mm_W3.5mm_P5.00mm                         77.5100   -67.3100    0.0000  top
+C7        470pF              C_Rect_L7.0mm_W3.5mm_P5.00mm                        137.2400   -55.8800    0.0000  top
+C8        470pF              C_Rect_L7.0mm_W3.5mm_P5.00mm                        151.1300   -66.0800  -90.0000  top
+D1        1N4003             D_DO-41_SOD81_P2.54mm_Vertical_AnodeUp               76.2000   -91.4400    0.0000  top
+D2        1N4003             D_DO-41_SOD81_P2.54mm_Vertical_AnodeUp               76.2000   -86.3600    0.0000  top
+D3        1N4003             D_DO-41_SOD81_P2.54mm_Vertical_AnodeUp               76.2000   -81.2800    0.0000  top
+D4        1N4003             D_DO-41_SOD81_P2.54mm_Vertical_AnodeUp               76.2000   -76.2000    0.0000  top
+J1        Pneumatic_Valves   PinHeader_1x08_P2.54mm_Vertical                      82.5500   -76.2000    0.0000  top
+J2        UP/DOWN_Switch     PinHeader_1x04_P2.54mm_Vertical                      96.5200   -68.5800   90.0000  top
+J3        OLED_Display       PinHeader_1x04_P2.54mm_Vertical                     138.4300   -68.5800    0.0000  top
+J4        NiveauSensor       PinHeader_1x06_P2.54mm_Vertical                     146.0500   -83.8200  180.0000  top
+J5        Power_In           PinHeader_1x04_P2.54mm_Vertical                      81.2800   -71.1200   90.0000  top
+Q1        IRLU120            TO-220-3_Vertical                                    95.2500   -78.7400  180.0000  top
+Q2        IRLU120            TO-220-3_Vertical                                    95.2500   -83.8200  180.0000  top
+Q3        IRLU120            TO-220-3_Vertical                                    95.2500   -88.9000  180.0000  top
+Q4        IRLU120            TO-220-3_Vertical                                    95.2500   -95.5700  180.0000  top
+R1        10k                R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal   113.0300   -88.9000   90.0000  top
+R2        10k                R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal   109.2200   -91.4400   90.0000  top
+R3        10k                R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal   105.4100   -93.9800   90.0000  top
+R4        10k                R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal   101.6000   -96.5200   90.0000  top
+U1        LM7805_TO220       TO-220-3_Vertical                                    95.2500   -54.6100  -90.0000  top
+U2        Arduino_Nano_v3.x  Arduino_Nano                                        118.1200   -58.4200    0.0000  top
+## End

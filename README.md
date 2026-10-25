@@ -29,6 +29,20 @@ side) from a tank with pressure-switched compressor, and shows state on a
 
 Low-power valves: all four valves may be energised together (no interlock).
 
+## Repository layout
+
+| Folder              | Content                                                        |
+|---------------------|----------------------------------------------------------------|
+| `AirSuspension/`    | Arduino sketch (firmware)                                      |
+| `hardware/FCU/`     | KiCad project: Front Control Unit — MCU, valve FETs, power     |
+| `hardware/RCU/`     | KiCad project: Rear Control Unit — connector distribution, sensor power, level shifter |
+
+The schematics are the source of truth for pin assignments; the GPIO table
+below must match `hardware/FCU`. Firmware releases are tagged `v*`; board
+revisions use `fcu-*` / `rcu-*` tags (for example `fcu-rev2`) and do not
+trigger a firmware build. KiCad backups, lock files and caches are
+git-ignored.
+
 ## Setup
 
 1. Clone the repo and open `AirSuspension/AirSuspension.ino` in the Arduino IDE 2.x.

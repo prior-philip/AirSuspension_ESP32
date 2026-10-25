@@ -6,3 +6,15 @@ build/
 .idea/
 .DS_Store
 AirSuspension/secrets.h
+
+# KiCad: generated / local-only files
+hardware/**/*-backups/
+hardware/**/.history/
+hardware/**/fp-info-cache
+hardware/**/*.lck
+hardware/**/*.kicad_prl
+hardware/**/*.kicad_sch-bak
+hardware/**/*.kicad_pcb-bak
+hardware/**/fp-*.tmp
+hardware/**/*.tmp
+hardware/**/*-rescue.*
