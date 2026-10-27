@@ -137,7 +137,7 @@ uint16_t                 lastWakeCycles = 0;
 // ============================================================================
 // GLOBAL DEFINITIONS (declared extern in headers)
 // ============================================================================
-const char* VERSION = "Version v261025_0828";
+const char* VERSION = "Version v261026_1151";
 const char* DESCR   = "ESP32-S3 SuperMini | CAL | ManualMode | WiFi | OTA | flatBagInit | noPulsing";
 
 
