@@ -1,7 +1,8 @@
 // WebInterface.h - WiFi Access Point + Web Dashboard / Control Interface
 //
 // Creates its own WiFi AP — no router needed.
-// Connect phone or laptop to:  SSID "AirSuspension"  PW = WIFI_AP_PASS (see secrets.h)
+// Connect phone or laptop to:  SSID "AirSuspension"  PW = stored password
+// (set via serial "p"; falls back to WIFI_AP_PASS from secrets.h)
 // Then open:  http://192.168.4.1
 //
 // Three-tab single-page app:
@@ -27,6 +28,7 @@
 #include <WebServer.h>
 #include <Update.h>     // OTA firmware update (built into the ESP32 core)
 #include <esp_ota_ops.h> // running-partition info for /api/fwinfo
+#include <Preferences.h>  // NVS: user-set WiFi password
 #include "Config.h"
 #include "Types.h"
 #include "Sensors.h"
@@ -869,12 +871,60 @@ void initWebInterface() {
   Serial.println(F("[Web] Routes registered (WiFi off until enabled)"));
 }
 
+// ── WiFi AP password ────────────────────────────────────────────────────
+// A password set over serial ("p") is stored in NVS (namespace "wifi", key
+// "appass") and survives deep sleep, power-off, USB re-flash and OTA.  Without
+// a stored password, WIFI_AP_PASS from secrets.h is used.  Only a full flash
+// erase removes the stored one.
+static char apPassword[64];          // WPA2: 8..63 chars + terminator
+static bool apPasswordLoaded = false;
+
+bool isValidWifiPassword(const char* pw) {
+  size_t n = strlen(pw);
+  if (n < 8 || n > 63) return false;
+  for (size_t i = 0; i < n; i++) if (pw[i] < 32 || pw[i] > 126) return false;
+  return true;
+}
+
+static void loadWifiPassword() {
+  apPasswordLoaded = true;
+  Preferences prefs;
+  if (prefs.begin("wifi", true)) {                     // read-only
+    String s = prefs.getString("appass", "");
+    prefs.end();
+    if (isValidWifiPassword(s.c_str())) {
+      strncpy(apPassword, s.c_str(), sizeof(apPassword) - 1);
+      apPassword[sizeof(apPassword) - 1] = 0;
+      Serial.println(F("[WiFi] Using stored AP password (NVS)"));
+      return;
+    }
+  }
+  strncpy(apPassword, WIFI_AP_PASS, sizeof(apPassword) - 1);
+  apPassword[sizeof(apPassword) - 1] = 0;
+  Serial.println(F("[WiFi] Using default AP password (secrets.h)"));
+}
+
+// Validate and store a new password; the next AP start uses it.
+bool saveWifiPassword(const char* pw) {
+  if (!isValidWifiPassword(pw)) return false;
+  Preferences prefs;
+  if (!prefs.begin("wifi", false)) return false;
+  size_t written = prefs.putString("appass", pw);
+  prefs.end();
+  if (written != strlen(pw)) return false;
+  strncpy(apPassword, pw, sizeof(apPassword) - 1);
+  apPassword[sizeof(apPassword) - 1] = 0;
+  apPasswordLoaded = true;
+  return true;
+}
+
 // Bring up the AP + web server.  Safe to call repeatedly.
 void startWebInterface() {
   if (wifiEnabled) return;
 
+  if (!apPasswordLoaded) loadWifiPassword();
   WiFi.mode(WIFI_AP);
-  WiFi.softAP(WIFI_AP_SSID, WIFI_AP_PASS);
+  WiFi.softAP(WIFI_AP_SSID, apPassword);
   WiFi.setTxPower((wifi_power_t)WIFI_TX_POWER_QDBM);
 
   registerWebRoutes();

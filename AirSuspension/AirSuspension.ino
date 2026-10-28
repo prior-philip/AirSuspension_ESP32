@@ -39,7 +39,7 @@
 //   RF calibration can disturb the ADC range.
 //
 //   I²C is on GPIO 8/9 (no conflicts on the SuperMini).  Do NOT call
-//   pinMode() on these pins anywhere outside Wire.begin().
+//   pinMode() on these pins 169anywhere outside Wire.begin().
 //
 // ============================================================================
 // LIBRARIES
@@ -137,7 +137,7 @@ uint16_t                 lastWakeCycles = 0;
 // ============================================================================
 // GLOBAL DEFINITIONS (declared extern in headers)
 // ============================================================================
-const char* VERSION = "Version v261026_1151";
+const char* VERSION = "Version v261028_1313";
 const char* DESCR   = "ESP32-S3 SuperMini | CAL | ManualMode | WiFi | OTA | flatBagInit | noPulsing";
 
 

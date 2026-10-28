@@ -7,7 +7,7 @@ Reads two analog ride-height sensors, drives four valves (inflate/deflate per
 side) from a tank with pressure-switched compressor, and shows state on a
 128×128 SH1107 OLED and an on-demand WiFi web dashboard.
 
-**Current release:** `Version v261026_1151`
+**Current release:** `Version v261028_1313`
 `ESP32-S3 SuperMini | CAL | ManualMode | WiFi | OTA | flatBagInit | noPulsing`
 
 ---
@@ -127,7 +127,11 @@ lists what the board wires up, and the two should match.
 4. Select the board settings below, then compile and upload.
 
 The example file contains a shared default password. Always set your own
-before flashing a board that goes into a vehicle.
+before a board goes into a vehicle — either in `secrets.h`, or on the device
+with the serial command `p` (see *Operation*). A password set with `p` is
+stored in NVS on the board and takes precedence over `secrets.h`; it
+survives deep sleep, power-off, USB re-flash and OTA updates. Only setting a
+new one, or a full flash erase, replaces it.
 
 ### Automatic builds (GitHub Actions)
 
@@ -137,8 +141,9 @@ as artifacts. Pushing a tag such as `v1.0.0` also attaches them to a GitHub
 Release.
 
 CI builds use `secrets.h.example`, so the downloaded `.bin` files carry the
-default password. For your own device, compile locally with your own
-`secrets.h`.
+default password. For your own device, either compile locally with your own
+`secrets.h`, or flash the CI build once and set your password with serial
+`p` — it stays on the board across later OTA updates.
 
 ## Build settings (Arduino IDE 2.x, core 3.3.x)
 
@@ -159,6 +164,7 @@ deep sleep with JTAG/gdb attached.
 | Serial `4 / 6`             | Setpoint −/+10 %                              |
 | Serial `c`, `5`, `?`       | Calibration, reboot, help                     |
 | Serial `w`                 | WiFi / web UI on / off                        |
+| Serial `p`                 | Set WiFi password (`p` + Enter, then password + Enter; or `p <password>`) |
 
 Web UI (auto-on for 20 min after power-on; menu → WiFi or serial `w`): dashboard with axle view, target slider (10 % steps),
 dedicated OFF button, bag-init prompt/buttons, OTA update (Sketch → Export
@@ -209,6 +215,26 @@ Compiled Binary → Update tab).
 
 Newest first. Each release updates `VERSION` (`Version vYYMMDD_HHMM`) and the
 one-line `DESCR` in the `.ino`.
+
+### v261028_1313 — Change WiFi password over serial (`p`)
+- New serial command `p`: type `p` + Enter, then the new password + Enter —
+  or in one line `p <password>`. WPA2 rules: 8–63 printable characters;
+  anything else is rejected and the old password stays. 60 s without input
+  cancels. Non-blocking: regulation, display and watchdog keep running.
+- Stored in NVS (`Preferences`, namespace `wifi`, key `appass`) and takes
+  precedence over `WIFI_AP_PASS` from `secrets.h`; survives deep sleep,
+  power-off, USB re-flash and OTA. No reset keyword — set a new password, or
+  a full flash erase returns to the `secrets.h` default.
+- If WiFi is on, the access point restarts immediately with the new password
+  (connected devices must reconnect); a running 20 min power-on auto-off
+  timer is kept. If WiFi is off, it applies at the next start.
+- The new password is echoed once in serial for confirmation.
+
+### v261028_1301 — Serial `w` restored (fix)
+- **Fix:** the serial `w` / `W` command (WiFi on/off, added in v261024_1151)
+  was missing on the `S3` branch — an older `SerialControl.h` had been
+  committed. Restored, including the `w=WiFi on/off` help text. Same path as
+  Menu → WiFi (`toggleWiFi()`).
 
 ### v261026_1151 — Display retry only when missing, faster boot, WiFi password in `secrets.h`
 - **Display:** the forced full re-init every 60 s while the display was
@@ -346,10 +372,6 @@ one-line `DESCR` in the `.ino`.
 - Dead code: button ISRs + `wakeupFlag`, `powerSave.sleepCycles`, unused
   manual-mode fields/`downWasPressed`, commented blocks, stale comments
   (pin table, LED section, OFF stepping, `Sensors.h` header/thresholds).
-
-- Serial `w` (WiFi on/off, v261024_1151) is missing on the `S3` branch: an
-  older `SerialControl.h` was committed. `toggleWiFi()` in the `.ino` is
-  present, only the serial command and help text are gone.
 
 **Hardware (details in the board READMEs)**
 - Button GPIOs: the FCU PCB routes `Button_Up` to GPIO 12 and `Button_Down`
