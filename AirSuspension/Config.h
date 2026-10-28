@@ -50,7 +50,14 @@ extern const char* DESCR;
 // WIFI ACCESS POINT
 // ============================================================================
 #define WIFI_AP_SSID  "AirSuspension"
-#define WIFI_AP_PASS  "Blammer79"     // WPA2 requires ≥ 8 characters
+// WIFI_AP_PASS (default AP password) lives in secrets.h (git-ignored). Copy
+// secrets.h.example to secrets.h and set your own default.  A password set over
+// serial ("p") is stored in NVS and takes precedence over this default.
+#if __has_include("secrets.h")
+  #include "secrets.h"
+#else
+  #error "Missing AirSuspension/secrets.h - copy secrets.h.example to secrets.h and set WIFI_AP_PASS"
+#endif
 
 // Lower TX power → smaller current spike at AP start-up + less EMI on
 // I²C/ADC.  8 dBm ≈ 6 mW, plenty for in-cabin range.
